@@ -1,38 +1,56 @@
-import { DEFAULT_VALUES, initMenu, setActionInit, renderDefaultValues , mainMenu } from "./utils.js"
-
-
+import * as ul from './utils.js'
+/** Variable de control */
+let DEFAULT_VALUE = false
+let students = []
+let grades = []
 
 const init = () => {
-  const action = setActionInit();
-  
-  if(action === 1) {
-    alert("Has escogido los valores por defecto\n" + renderDefaultValues(DEFAULT_VALUES))
-  } else {
-    alert("Aun no esta listo")
-  }
+   let msg = "";
+   let action;
+  do {
+    action = ul.setActionInit();
+   
+    if (action === 1) {
+      DEFAULT_VALUE = true
+      msg = "Se ha escogido la opcion de valores por defecto !"
+    } else if (action == 2) {
+      DEFAULT_VALUE = false
+      msg = "Se ha escogido la opcion de valores propios !"
+    } else {
+      alert("No se reconoce esta accion, porfavor intente de nuevo")
+    }
 
+  } while (action != 1 && action != 2);
+
+  alert(msg)
+  if (!DEFAULT_VALUE) {
+    for (let i = 0; i < 5; i++) {
+      let name = ul.setStudentName(i, students);
+      let grade = ul.setStudentGrade(i);
+    
+      students.push(name);
+      grades.push(grade);
+      
+    }
+  }
 }
 
-const services = (action) => {
-  switch (action) {
-    case 1:
-      alert(renderDefaultValues(DEFAULT_VALUES))
-      break;
-    case 2:
-    default:
-      break;
-  }
-}
 
 
 const main = () => {
+  let output = 1
   do {
-    
-    alert(mainMenu)
-    let action = prompt("Introduce la accion a realizar:")
-  } while (action != 0);
+
+    let action = Number(prompt(ul.mainMenu))
+    if (DEFAULT_VALUE) {
+      output = ul.services(action, ul.DEFAULT_STUDENTS, ul.DEFAULT_GRADES)
+    } else {
+      output = ul.services(action, students, grades)
+    }
+  } while (output != 0);
 }
 
 
 init();
+
 main();
